@@ -8,7 +8,7 @@
 #ifndef RCC_PRIVATE_H_
 #define RCC_PRIVATE_H_
 
-#define RCC_BASE_ADDRESS 0x40023800
+#define RCC_BASE_ADDRESS 0x40023800U
 
 /*RCC_CR*/
 #define PLLRDY	25
@@ -86,47 +86,47 @@
 
 typedef struct
 {
-	uint32_t RCC_CR;
-	uint32_t RCC_PLLCFGR;
-	uint32_t RCC_CFGR;
-	uint32_t RCC_CIR;
-	uint32_t RCC_AHB1RSTR;
-	uint32_t RCC_AHB2RSTR;
-	uint32_t RCC_AHB3RSTR;
-	uint32_t RESERVED1;
-	uint32_t RCC_APB1RSTR;
-	uint32_t RCC_APB2RSTR;
-	uint32_t RESERVED2;
-	uint32_t RESERVED3;
-	uint32_t RCC_AHB1ENR;
-	uint32_t RCC_AHB2ENR;
-	uint32_t RCC_AHB3ENR;
-	uint32_t RESERVED4;
-	uint32_t RCC_APB1ENR;
-	uint32_t RCC_APB2ENR;
-	uint32_t RESERVED5;
-	uint32_t RESERVED6;
-	uint32_t RCC_AHB1LPENR;
-	uint32_t RCC_AHB2LPENR;
-	uint32_t RCC_AHB3LPENR;
-	uint32_t RESERVED7;
-	uint32_t RCC_APB1LPENR;
-	uint32_t RCC_APB2LPENR;
-	uint32_t RESERVED8;
-	uint32_t RESERVED9;
-	uint32_t RCC_BDCR;
-	uint32_t RCC_CSR;
-	uint32_t RESERVED10;
-	uint32_t RESERVED11;
-	uint32_t RCC_SSCGR;
-	uint32_t RCC_PLLI2SCFGR;
-	uint32_t RCC_PLLSAICFGR;
-	uint32_t RCC_DCKCFGR;
-	uint32_t RCC_CKGATENR;
-	uint32_t RCC_DCKCFGR2;
+	volatile uint32_t RCC_CR;
+	volatile uint32_t RCC_PLLCFGR;
+	volatile uint32_t RCC_CFGR;
+	volatile uint32_t RCC_CIR;
+	volatile uint32_t RCC_AHB1RSTR;
+	volatile uint32_t RCC_AHB2RSTR;
+	volatile uint32_t RCC_AHB3RSTR;
+	volatile uint32_t RESERVED1;
+	volatile uint32_t RCC_APB1RSTR;
+	volatile uint32_t RCC_APB2RSTR;
+	volatile uint32_t RESERVED2;
+	volatile uint32_t RESERVED3;
+	volatile uint32_t RCC_AHB1ENR;
+	volatile uint32_t RCC_AHB2ENR;
+	volatile uint32_t RCC_AHB3ENR;
+	volatile uint32_t RESERVED4;
+	volatile uint32_t RCC_APB1ENR;
+	volatile uint32_t RCC_APB2ENR;
+	volatile uint32_t RESERVED5;
+	volatile uint32_t RESERVED6;
+	volatile uint32_t RCC_AHB1LPENR;
+	volatile uint32_t RCC_AHB2LPENR;
+	volatile uint32_t RCC_AHB3LPENR;
+	volatile uint32_t RESERVED7;
+	volatile uint32_t RCC_APB1LPENR;
+	volatile uint32_t RCC_APB2LPENR;
+	volatile uint32_t RESERVED8;
+	volatile uint32_t RESERVED9;
+	volatile uint32_t RCC_BDCR;
+	volatile uint32_t RCC_CSR;
+	volatile uint32_t RESERVED10;
+	volatile uint32_t RESERVED11;
+	volatile uint32_t RCC_SSCGR;
+	volatile uint32_t RCC_PLLI2SCFGR;
+	volatile uint32_t RCC_PLLSAICFGR;
+	volatile uint32_t RCC_DCKCFGR;
+	volatile uint32_t RCC_CKGATENR;
+	volatile uint32_t RCC_DCKCFGR2;
 
 } RCC_REGs;
 
-#define MRCC ((volatile RCC_REGs *)RCC_BASE_ADDRESS)
+#define MRCC ((RCC_REGs *)RCC_BASE_ADDRESS)
 
 #endif /* RCC_PRIVATE_H_ */

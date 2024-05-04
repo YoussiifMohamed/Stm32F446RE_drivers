@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include "BIT_MATH.h"
+#include "ERROR_TYPE.h"
 #include "Rcc_config.h"
 #include "Rcc_private.h"
 #include "Rcc_interface.h"
@@ -14,7 +15,7 @@
 
 ERROR_t MRCC_ERROR_tSetClkStatus(uint8_t Copy_uint8_tClockType , uint8_t Copy_uint8_tStatus)
 {
-	ERROR_t Loc_ErrorState=NOK;
+	ERROR_t Loc_ErrorState=CHECK;
 	uint16_t Loc_timeout=0;
 
 	if (Copy_uint8_tClockType == HSI)
@@ -107,7 +108,7 @@ ERROR_t MRCC_ERROR_tSetClkStatus(uint8_t Copy_uint8_tClockType , uint8_t Copy_ui
 
 ERROR_t MRCC_ERROR_tSetSysClk(uint8_t Copy_uint8_tClockType )
 {
-	ERROR_t Loc_ErrorState=NOK;
+	ERROR_t Loc_ErrorState=CHECK;
 	uint8_t Loc_ClkCheck;
 	switch (Copy_uint8_tClockType)
 	{
@@ -150,7 +151,7 @@ ERROR_t MRCC_ERROR_tSetSysClk(uint8_t Copy_uint8_tClockType )
 	return Loc_ErrorState;
 }
 
-void MRCC_voidPLLConfig(uint8_t Copy_uint8_tPllSrc ,const  PLL_MUL_t Copy_PLL_MUL_tMultipliersValues)
+void MRCC_voidPLLConfig(uint8_t Copy_uint8_tPllSrc ,const  PLL_MUL_t * PTR_PLL_MUL_tMultipliersValues)
 {
 	switch (Copy_uint8_tPllSrc)
 	{
@@ -159,7 +160,7 @@ void MRCC_voidPLLConfig(uint8_t Copy_uint8_tPllSrc ,const  PLL_MUL_t Copy_PLL_MU
 	default: /*Wrong SRC */  break;
 	}
 
-	switch (Copy_PLL_MUL_tMultipliersValues.pllp)
+	switch (PTR_PLL_MUL_tMultipliersValues->pllp)
 	{
 	case 2:
 		CLR_BIT(MRCC->RCC_PLLCFGR,PLLP0);
@@ -179,40 +180,40 @@ void MRCC_voidPLLConfig(uint8_t Copy_uint8_tPllSrc ,const  PLL_MUL_t Copy_PLL_MU
 		break;
 	}
 
-	if ((Copy_PLL_MUL_tMultipliersValues.plln >49 && Copy_PLL_MUL_tMultipliersValues.plln<433))
+	if ((PTR_PLL_MUL_tMultipliersValues->plln >49 && PTR_PLL_MUL_tMultipliersValues->plln<433))
 	{
-		MRCC->RCC_PLLCFGR= (MRCC->RCC_PLLCFGR & 0xFFFF803F) | (Copy_PLL_MUL_tMultipliersValues.plln <<PLLN);
+		MRCC->RCC_PLLCFGR= (MRCC->RCC_PLLCFGR & 0xFFFF803F) | ((*PTR_PLL_MUL_tMultipliersValues).plln <<PLLN);
 	}
 
-	if ((Copy_PLL_MUL_tMultipliersValues.pllm >1 && Copy_PLL_MUL_tMultipliersValues.pllm<64))
+	if ((PTR_PLL_MUL_tMultipliersValues->pllm >1 && PTR_PLL_MUL_tMultipliersValues->pllm<64))
 	{
-		MRCC->RCC_PLLCFGR= (MRCC->RCC_PLLCFGR & 0xFFFFFFC0) | (Copy_PLL_MUL_tMultipliersValues.pllm);
+		MRCC->RCC_PLLCFGR= (MRCC->RCC_PLLCFGR & 0xFFFFFFC0) | ((*PTR_PLL_MUL_tMultipliersValues).pllm);
 	}
 }
 
-void MRCC_voidAHBPreScaler(uint8_t Copy_uint8Prescaler)
+void MRCC_voidAHBPreScaler(AHB_PRESCALER Copy_AHB_PRESCALERPrescaler)
 {
-	MRCC->RCC_CFGR = (MRCC->RCC_CFGR & 0xFFFFFF0F) | Copy_uint8Prescaler;
+	MRCC->RCC_CFGR = (MRCC->RCC_CFGR & 0xFFFFFF0F) | (Copy_AHB_PRESCALERPrescaler<<HPRE);
 }
 
-void MRCC_voidAPB1PreScaler(uint8_t Copy_uint8Prescaler)
+void MRCC_voidAPB1PreScaler(APB_PRESCALER Copy_APB_PRESCALERPrescaler)
 {
-	MRCC->RCC_CFGR = (MRCC->RCC_CFGR & 0xFFFFE3FF) | Copy_uint8Prescaler;
+	MRCC->RCC_CFGR = (MRCC->RCC_CFGR & 0xFFFFE3FF) | (Copy_APB_PRESCALERPrescaler<<PPRE1);
 }
 
-void MRCC_voidAPB2PreScaler(uint8_t Copy_uint8Prescaler)
+void MRCC_voidAPB2PreScaler(APB_PRESCALER Copy_APB_PRESCALERPrescaler)
 {
-	MRCC->RCC_CFGR = (MRCC->RCC_CFGR & 0xFFFF1FFF) | Copy_uint8Prescaler;
+	MRCC->RCC_CFGR = (MRCC->RCC_CFGR & 0xFFFF1FFF) | (Copy_APB_PRESCALERPrescaler<<PPRE2);
 }
 
-void MRCC_voidAHB1EnableCLK (uint8_t Copy_uint8PeriphralNumber)
+void MRCC_voidAHB1EnableCLK (AHB1_PERIPHERAL Copy_AHB1_PERIPHERALPeriphralNumber)
 {
-	SET_BIT(MRCC->RCC_AHB1ENR,Copy_uint8PeriphralNumber);
+	SET_BIT(MRCC->RCC_AHB1ENR,Copy_AHB1_PERIPHERALPeriphralNumber);
 }
 
-void MRCC_voidAHB1DisableCLK (uint8_t Copy_uint8PeriphralNumber)
+void MRCC_voidAHB1DisableCLK (AHB1_PERIPHERAL Copy_AHB1_PERIPHERALPeriphralNumber)
 {
-	CLR_BIT(MRCC->RCC_AHB1ENR,Copy_uint8PeriphralNumber);
+	CLR_BIT(MRCC->RCC_AHB1ENR,Copy_AHB1_PERIPHERALPeriphralNumber);
 }
 
 void MRCC_voidAPB1EnableCLK (uint8_t Copy_uint8PeriphralNumber)
